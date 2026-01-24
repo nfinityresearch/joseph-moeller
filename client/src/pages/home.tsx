@@ -27,10 +27,10 @@ const MOCK_ARCHIVE: ArchiveItemProps[] = [
   },
   {
     id: "RH-004",
-    type: "poetry",
-    title: "Time",
-    content: "Time is a flat circle,\ncut from paper,\nburned at the edges.",
-    date: "1992"
+    type: "text",
+    title: "On Being Blank",
+    content: "People misread what I meant by 'Blank Generation.' To me, 'blank' is a line where you can fill in anything.",
+    date: "1978"
   },
   {
     id: "RH-005",
