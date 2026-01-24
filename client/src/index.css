@@ -4,10 +4,10 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --radius-sm: 0rem;
-  --radius-md: 0rem;
-  --radius-lg: 0rem;
-  --radius-xl: 0rem;
+  --radius-sm: 0.2rem;
+  --radius-md: 0.4rem;
+  --radius-lg: 0.6rem;
+  --radius-xl: 0.8rem;
 
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
@@ -36,76 +36,74 @@
   --color-border: hsl(var(--border));
   --color-input: hsl(var(--input));
   --color-ring: hsl(var(--ring));
-
-  --font-mono: 'Space Mono', monospace;
-  --font-sans: 'Inter', sans-serif;
   
-  --cursor-text: url('data:image/svg+xml;utf8,<svg width="4" height="16" viewBox="0 0 4 16" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="4" height="16" fill="black"/></svg>') 2 8, auto;
+  --font-serif: 'Crimson Pro', serif;
 }
 
 :root {
-  /* Stark, Brutalist White */
-  --background: 0 0% 98%;
-  --foreground: 0 0% 0%;
+  /* Classical, warm paper white */
+  --background: 40 10% 98%;
+  /* Soft, ink-like black (not pure black) */
+  --foreground: 0 0% 15%;
 
-  --card: 0 0% 100%;
-  --card-foreground: 0 0% 0%;
+  --card: 40 10% 98%;
+  --card-foreground: 0 0% 15%;
 
-  --popover: 0 0% 100%;
-  --popover-foreground: 0 0% 0%;
+  --popover: 40 10% 98%;
+  --popover-foreground: 0 0% 15%;
 
-  /* Electric Blue / Hyperlink Blue for raw digital feel */
-  --primary: 240 100% 50%;
-  --primary-foreground: 0 0% 100%;
+  /* Classical Blue/Black for links/accents */
+  --primary: 220 20% 30%;
+  --primary-foreground: 40 10% 98%;
 
-  --secondary: 0 0% 92%;
-  --secondary-foreground: 0 0% 0%;
+  --secondary: 40 5% 94%;
+  --secondary-foreground: 0 0% 15%;
 
-  --muted: 0 0% 92%;
-  --muted-foreground: 0 0% 40%;
+  --muted: 40 5% 90%;
+  --muted-foreground: 0 0% 45%;
 
-  --accent: 0 0% 92%;
-  --accent-foreground: 0 0% 0%;
+  --accent: 40 5% 94%;
+  --accent-foreground: 0 0% 15%;
 
-  --destructive: 0 100% 50%;
-  --destructive-foreground: 0 0% 100%;
+  --destructive: 0 60% 50%;
+  --destructive-foreground: 40 10% 98%;
 
-  --border: 0 0% 0%;
-  --input: 0 0% 0%;
-  --ring: 0 0% 0%;
+  --border: 0 0% 90%;
+  --input: 0 0% 90%;
+  --ring: 220 20% 30%;
   
-  --radius: 0;
+  --radius: 0.5rem;
 }
 
 .dark {
-  /* Terminal Black */
-  --background: 0 0% 5%;
-  --foreground: 0 0% 95%;
+  /* Soft Charcoal */
+  --background: 0 0% 12%;
+  --foreground: 40 5% 90%;
 
-  --card: 0 0% 8%;
-  --card-foreground: 0 0% 95%;
+  --card: 0 0% 12%;
+  --card-foreground: 40 5% 90%;
 
-  --popover: 0 0% 8%;
-  --popover-foreground: 0 0% 95%;
+  --popover: 0 0% 12%;
+  --popover-foreground: 40 5% 90%;
 
-  --primary: 120 100% 50%; /* Terminal Green */
-  --primary-foreground: 0 0% 0%;
+  --primary: 40 5% 90%;
+  --primary-foreground: 0 0% 12%;
 
-  --secondary: 0 0% 15%;
-  --secondary-foreground: 0 0% 95%;
+  --secondary: 0 0% 18%;
+  --secondary-foreground: 40 5% 90%;
 
-  --muted: 0 0% 20%;
-  --muted-foreground: 0 0% 60%;
+  --muted: 0 0% 18%;
+  --muted-foreground: 40 5% 60%;
 
-  --accent: 0 0% 15%;
-  --accent-foreground: 0 0% 95%;
+  --accent: 0 0% 18%;
+  --accent-foreground: 40 5% 90%;
 
-  --destructive: 0 100% 50%;
-  --destructive-foreground: 0 0% 95%;
+  --destructive: 0 60% 50%;
+  --destructive-foreground: 40 5% 90%;
 
   --border: 0 0% 20%;
   --input: 0 0% 20%;
-  --ring: 120 100% 50%;
+  --ring: 40 5% 90%;
 }
 
 @layer base {
@@ -113,59 +111,9 @@
     @apply border-border;
   }
   body {
-    @apply font-mono antialiased bg-background text-foreground;
-    /* Minimal grid background */
-    background-image: linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px),
-                      linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px);
-    background-size: 20px 20px;
+    @apply font-serif antialiased bg-background text-foreground;
   }
-  ::selection {
-    background-color: var(--primary);
-    color: var(--primary-foreground);
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-normal tracking-normal;
   }
-}
-
-.glitch-hover {
-  position: relative;
-}
-.glitch-hover:hover::before {
-  content: attr(data-text);
-  position: absolute;
-  left: -2px;
-  text-shadow: 1px 0 #ff00c1;
-  top: 0;
-  color: var(--foreground);
-  background: var(--background);
-  overflow: hidden;
-  clip-path: inset(0 90% 0 0);
-  animation: noise-anim 2s infinite linear alternate-reverse;
-}
-.glitch-hover:hover::after {
-  content: attr(data-text);
-  position: absolute;
-  left: 2px;
-  text-shadow: -1px 0 #00fff9;
-  top: 0;
-  color: var(--foreground);
-  background: var(--background);
-  overflow: hidden;
-  clip-path: inset(0 0 0 90%);
-  animation: noise-anim-2 3s infinite linear alternate-reverse;
-}
-
-@keyframes noise-anim {
-  0% { clip-path: inset(29% 0 54% 0); }
-  20% { clip-path: inset(78% 0 5% 0); }
-  40% { clip-path: inset(16% 0 69% 0); }
-  60% { clip-path: inset(3% 0 96% 0); }
-  80% { clip-path: inset(42% 0 19% 0); }
-  100% { clip-path: inset(88% 0 2% 0); }
-}
-@keyframes noise-anim-2 {
-  0% { clip-path: inset(12% 0 81% 0); }
-  20% { clip-path: inset(62% 0 25% 0); }
-  40% { clip-path: inset(37% 0 50% 0); }
-  60% { clip-path: inset(84% 0 3% 0); }
-  80% { clip-path: inset(5% 0 92% 0); }
-  100% { clip-path: inset(48% 0 39% 0); }
 }

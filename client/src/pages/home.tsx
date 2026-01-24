@@ -1,106 +1,40 @@
-import { GenerativeGrid } from "@/components/generative-grid";
-import { ArchiveItemProps } from "@/components/archive-item";
+import { GenerativeStream } from "@/components/generative-stream";
 import { motion } from "framer-motion";
-
-const MOCK_ARCHIVE: ArchiveItemProps[] = [
-  {
-    id: "RH-001",
-    type: "poetry",
-    title: "Blank Generation",
-    content: "I was saying let me out of here before I was\neven born—it's such a gamble when you get a face\nIt's fascinating to observe what the mirror does\nbut when I dine it's for the wall that I set a place",
-    date: "1977"
-  },
-  {
-    id: "RH-002",
-    type: "text",
-    title: "The Voidoid",
-    content: "The aesthetic was always about removal. Taking away the excess until only the nerve endings remained. We didn't want to be polished; we wanted to be true.",
-    date: "1980"
-  },
-  {
-    id: "RH-003",
-    type: "image",
-    title: "CBGB Exterior",
-    content: "Original photograph of the Bowery frontage, pre-gentrification. Note the layers of flyers.",
-    imageSrc: "/xerox-noise.png",
-    date: "1976"
-  },
-  {
-    id: "RH-004",
-    type: "text",
-    title: "On Being Blank",
-    content: "People misread what I meant by 'Blank Generation.' To me, 'blank' is a line where you can fill in anything.",
-    date: "1978"
-  },
-  {
-    id: "RH-005",
-    type: "text",
-    title: "Notebook Fragment #33",
-    content: "Walking down 2nd Avenue. The heat rising from the subway grates smells like electricity and old hair. I miss the danger but not the fear.",
-    date: "2001"
-  },
-  {
-    id: "RH-006",
-    type: "image",
-    title: "Torn Flyer",
-    content: "Scan of a gig flyer found in a pocket.",
-    imageSrc: "/torn-edge.png",
-    date: "1978"
-  },
-  {
-    id: "RH-007",
-    type: "text",
-    title: "On Formatting",
-    content: "The page is a constraint. Break the page.",
-    date: "1985"
-  },
-  {
-    id: "RH-008",
-    type: "poetry",
-    title: "Go Now",
-    content: "Go now.\nBefore the light changes.\nBefore the ink dries.\nBefore you forget why you came.",
-    date: "1996"
-  }
-];
 
 export default function Home() {
   return (
-    <div className="min-h-screen p-4 md:p-8 lg:p-12 max-w-[1600px] mx-auto">
-      <header className="mb-12 md:mb-24 pt-12">
-        <div className="border-b-4 border-foreground pb-4 mb-4">
-          <motion.h1 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-5xl md:text-8xl font-sans font-black tracking-tighter uppercase glitch-hover"
-            data-text="RICHARD HELL"
-          >
-            Richard Hell
-          </motion.h1>
-        </div>
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
-          <p className="font-mono text-sm max-w-md text-muted-foreground">
-            LIVING ARCHIVE v2.0 <br/>
-            GENERATIVE SEQUENCE <br/>
-            EST. 1949
-          </p>
-          <div className="font-mono text-xs uppercase text-right">
-            <p>System Status: ONLINE</p>
-            <p className="text-primary animate-pulse">Scanning database...</p>
-          </div>
-        </div>
+    <div className="min-h-screen w-full flex flex-col items-center bg-background selection:bg-primary/10 selection:text-primary transition-colors duration-1000">
+      
+      {/* Navigation / Header - Extremely Minimal */}
+      <header className="w-full max-w-4xl mx-auto p-8 flex justify-between items-baseline opacity-0 animate-[fade-in_2s_ease-out_forwards]">
+        <h1 className="text-base font-serif tracking-wide text-foreground">
+          Richard Hell
+        </h1>
+        <nav className="flex gap-6 text-sm italic text-muted-foreground">
+          <span className="cursor-pointer hover:text-foreground transition-colors">Archive</span>
+          <span className="cursor-pointer hover:text-foreground transition-colors">Index</span>
+          <span className="cursor-pointer hover:text-foreground transition-colors">About</span>
+        </nav>
       </header>
 
-      <main>
-        <GenerativeGrid items={MOCK_ARCHIVE} />
+      {/* Main Generative Content */}
+      <main className="flex-1 w-full max-w-4xl mx-auto flex flex-col justify-center relative">
+        <GenerativeStream className="w-full" />
+        
+        {/* Subtle decorative element */}
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 2, duration: 2 }}
+          className="absolute bottom-12 left-1/2 -translate-x-1/2 text-[10px] text-muted-foreground/40 font-serif tracking-widest uppercase"
+        >
+          Fig. 1 — The Living Text
+        </motion.div>
       </main>
 
-      <footer className="mt-24 pt-12 border-t border-border flex justify-between items-end">
-        <div className="text-9xl font-sans font-black text-border opacity-20 select-none pointer-events-none -mb-8 -ml-4">
-          VOID
-        </div>
-        <p className="font-mono text-xs text-muted-foreground">
-          © {new Date().getFullYear()} Richard Hell Archive
-        </p>
+      {/* Footer Status */}
+      <footer className="w-full max-w-4xl mx-auto p-8 flex justify-center text-xs text-muted-foreground/50 font-serif italic">
+        <span className="animate-pulse mr-2">●</span> Live Archive
       </footer>
     </div>
   );
