@@ -1,117 +1,107 @@
-import { Layout } from "@/components/layout";
-import { PoemCard } from "@/components/poem-card";
+import { GenerativeGrid } from "@/components/generative-grid";
+import { ArchiveItemProps } from "@/components/archive-item";
 import { motion } from "framer-motion";
-import { Separator } from "@/components/ui/separator";
+
+const MOCK_ARCHIVE: ArchiveItemProps[] = [
+  {
+    id: "RH-001",
+    type: "poetry",
+    title: "Blank Generation",
+    content: "I was saying let me out of here before I was\neven born—it's such a gamble when you get a face\nIt's fascinating to observe what the mirror does\nbut when I dine it's for the wall that I set a place",
+    date: "1977"
+  },
+  {
+    id: "RH-002",
+    type: "text",
+    title: "The Voidoid",
+    content: "The aesthetic was always about removal. Taking away the excess until only the nerve endings remained. We didn't want to be polished; we wanted to be true.",
+    date: "1980"
+  },
+  {
+    id: "RH-003",
+    type: "image",
+    title: "CBGB Exterior",
+    content: "Original photograph of the Bowery frontage, pre-gentrification. Note the layers of flyers.",
+    imageSrc: "/xerox-noise.png",
+    date: "1976"
+  },
+  {
+    id: "RH-004",
+    type: "poetry",
+    title: "Time",
+    content: "Time is a flat circle,\ncut from paper,\nburned at the edges.",
+    date: "1992"
+  },
+  {
+    id: "RH-005",
+    type: "text",
+    title: "Notebook Fragment #33",
+    content: "Walking down 2nd Avenue. The heat rising from the subway grates smells like electricity and old hair. I miss the danger but not the fear.",
+    date: "2001"
+  },
+  {
+    id: "RH-006",
+    type: "image",
+    title: "Torn Flyer",
+    content: "Scan of a gig flyer found in a pocket.",
+    imageSrc: "/torn-edge.png",
+    date: "1978"
+  },
+  {
+    id: "RH-007",
+    type: "text",
+    title: "On Formatting",
+    content: "The page is a constraint. Break the page.",
+    date: "1985"
+  },
+  {
+    id: "RH-008",
+    type: "poetry",
+    title: "Go Now",
+    content: "Go now.\nBefore the light changes.\nBefore the ink dries.\nBefore you forget why you came.",
+    date: "1996"
+  }
+];
 
 export default function Home() {
   return (
-    <Layout>
-      <header className="mb-24 md:mb-40 pt-12 text-center relative">
-        <motion.p 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1.5 }}
-          className="font-serif-display text-sm tracking-[0.2em] uppercase text-muted-foreground mb-4"
-        >
-          Charles Baudelaire
-        </motion.p>
-        <motion.h1 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.2, delay: 0.2 }}
-          className="font-serif-display text-6xl md:text-8xl lg:text-9xl font-medium tracking-tighter text-primary"
-        >
-          Les Fleurs<br className="md:hidden" /> <span className="italic text-foreground">du</span> Mal
-        </motion.h1>
-        <motion.div 
-          initial={{ scaleX: 0 }}
-          animate={{ scaleX: 1 }}
-          transition={{ duration: 1.5, delay: 0.5 }}
-          className="h-px w-32 bg-primary mx-auto mt-8"
-        />
+    <div className="min-h-screen p-4 md:p-8 lg:p-12 max-w-[1600px] mx-auto">
+      <header className="mb-12 md:mb-24 pt-12">
+        <div className="border-b-4 border-foreground pb-4 mb-4">
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-5xl md:text-8xl font-sans font-black tracking-tighter uppercase glitch-hover"
+            data-text="RICHARD HELL"
+          >
+            Richard Hell
+          </motion.h1>
+        </div>
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+          <p className="font-mono text-sm max-w-md text-muted-foreground">
+            LIVING ARCHIVE v2.0 <br/>
+            GENERATIVE SEQUENCE <br/>
+            EST. 1949
+          </p>
+          <div className="font-mono text-xs uppercase text-right">
+            <p>System Status: ONLINE</p>
+            <p className="text-primary animate-pulse">Scanning database...</p>
+          </div>
+        </div>
       </header>
 
-      <section className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-40 items-start">
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.5, delay: 0.4 }}
-          className="md:col-span-5 relative"
-        >
-          <div className="relative aspect-[3/4] overflow-hidden bg-muted">
-             {/* Using the generated image */}
-            <img 
-              src="/baudelaire-mood.png" 
-              alt="Portrait mood" 
-              className="object-cover w-full h-full grayscale contrast-125 hover:grayscale-0 transition-all duration-1000 ease-out"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-20" />
-            <div className="absolute inset-0 mix-blend-multiply bg-[#f5f0e6] opacity-30" /> {/* Texture overlay */}
-          </div>
-          <p className="font-script text-2xl md:text-3xl absolute -bottom-8 -right-4 text-foreground rotate-[-4deg]">
-            Spleen et Idéal
-          </p>
-        </motion.div>
-        
-        <div className="md:col-span-1 hidden md:block" />
+      <main>
+        <GenerativeGrid items={MOCK_ARCHIVE} />
+      </main>
 
-        <div className="md:col-span-6 space-y-8 pt-12">
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1, delay: 0.8 }}
-          >
-            <p className="font-serif-body text-xl md:text-2xl leading-loose first-letter:text-6xl first-letter:font-serif-display first-letter:float-left first-letter:mr-3 first-letter:text-primary">
-              Plunging into the abyss, Heaven or Hell, who cares? <br/>
-              To find something new in the depths of the unknown!
-            </p>
-            <p className="font-serif-body text-muted-foreground mt-8 italic text-lg">
-              — Le Voyage (VIII)
-            </p>
-          </motion.div>
+      <footer className="mt-24 pt-12 border-t border-border flex justify-between items-end">
+        <div className="text-9xl font-sans font-black text-border opacity-20 select-none pointer-events-none -mb-8 -ml-4">
+          VOID
         </div>
-      </section>
-
-      <Separator className="bg-primary/20 my-24" />
-
-      <section className="space-y-0">
-        <PoemCard 
-          number="I"
-          title="L'Albatros"
-          excerpt="Souvent, pour s'amuser, les hommes d'équipage
-          Prennent des albatros, vastes oiseaux des mers,
-          Qui suivent, indolents compagnons de voyage,
-          Le navire glissant sur les gouffres amers."
-          delay={0.2}
-        />
-        
-        <PoemCard 
-          number="II"
-          title="Correspondances"
-          excerpt="La Nature est un temple où de vivants piliers
-          Laissent parfois sortir de confuses paroles;
-          L'homme y passe à travers des forêts de symboles
-          Qui l'observent avec des regards familiers."
-          delay={0.2}
-        />
-
-        <PoemCard 
-          number="LXXVIII"
-          title="Spleen"
-          excerpt="Quand le ciel bas et lourd pèse comme un couvercle
-          Sur l'esprit gémissant en proie aux longs ennuis,
-          Et que de l'horizon embrassant tout le cercle
-          Il nous verse un jour noir plus triste que les nuits..."
-          delay={0.2}
-        />
-      </section>
-
-      <footer className="mt-40 text-center pb-12">
-        <p className="font-serif-display text-primary text-2xl mb-4">Fin</p>
-        <p className="font-serif-body text-sm text-muted-foreground">
-          1857 — Edition Critique
+        <p className="font-mono text-xs text-muted-foreground">
+          © {new Date().getFullYear()} Richard Hell Archive
         </p>
       </footer>
-    </Layout>
+    </div>
   );
 }

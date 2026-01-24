@@ -4,12 +4,11 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --radius-sm: 0.125rem;
-  --radius-md: 0.25rem;
-  --radius-lg: 0.375rem;
-  --radius-xl: 0.5rem;
+  --radius-sm: 0rem;
+  --radius-md: 0rem;
+  --radius-lg: 0rem;
+  --radius-xl: 0rem;
 
-  /* Paper Theme Colors */
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
   
@@ -37,114 +36,76 @@
   --color-border: hsl(var(--border));
   --color-input: hsl(var(--input));
   --color-ring: hsl(var(--ring));
-  
-  --color-sidebar: hsl(var(--sidebar));
-  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
-  --color-sidebar-primary: hsl(var(--sidebar-primary));
-  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
-  --color-sidebar-accent: hsl(var(--sidebar-accent));
-  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
-  --color-sidebar-border: hsl(var(--sidebar-border));
-  --color-sidebar-ring: hsl(var(--sidebar-ring));
 
-  --font-serif-display: 'Cormorant Garamond', serif;
-  --font-serif-body: 'EB Garamond', serif;
-  --font-script: 'Pinyon Script', cursive;
-
-  --animate-fade-in: fade-in 1s ease-out;
+  --font-mono: 'Space Mono', monospace;
+  --font-sans: 'Inter', sans-serif;
   
-  @keyframes fade-in {
-    0% { opacity: 0; transform: translateY(10px); }
-    100% { opacity: 1; transform: translateY(0); }
-  }
+  --cursor-text: url('data:image/svg+xml;utf8,<svg width="4" height="16" viewBox="0 0 4 16" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="4" height="16" fill="black"/></svg>') 2 8, auto;
 }
 
-/* Light Mode - The Paper Aesthetic */
 :root {
-  /* Warm, aged paper white */
-  --background: 40 20% 97%; 
-  /* Deep ink black, slightly warm */
-  --foreground: 0 0% 15%; 
+  /* Stark, Brutalist White */
+  --background: 0 0% 98%;
+  --foreground: 0 0% 0%;
 
-  --card: 40 20% 95%;
-  --card-foreground: 0 0% 15%;
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 0%;
 
-  --popover: 40 20% 97%;
-  --popover-foreground: 0 0% 15%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 0 0% 0%;
 
-  /* Dried Blood Red / Deep Burgundy for accents */
-  --primary: 350 30% 35%;
-  --primary-foreground: 40 20% 97%;
+  /* Electric Blue / Hyperlink Blue for raw digital feel */
+  --primary: 240 100% 50%;
+  --primary-foreground: 0 0% 100%;
 
-  /* Faded Ink / Charcoal */
-  --secondary: 40 10% 90%;
-  --secondary-foreground: 0 0% 15%;
+  --secondary: 0 0% 92%;
+  --secondary-foreground: 0 0% 0%;
 
-  /* Sepia / Watermark tone */
-  --muted: 40 10% 85%;
+  --muted: 0 0% 92%;
   --muted-foreground: 0 0% 40%;
 
-  /* Highlight */
-  --accent: 40 30% 92%;
-  --accent-foreground: 350 30% 35%;
+  --accent: 0 0% 92%;
+  --accent-foreground: 0 0% 0%;
 
-  --destructive: 0 50% 50%;
-  --destructive-foreground: 40 20% 97%;
+  --destructive: 0 100% 50%;
+  --destructive-foreground: 0 0% 100%;
 
-  --border: 40 10% 80%;
-  --input: 40 10% 80%;
-  --ring: 350 30% 35%;
+  --border: 0 0% 0%;
+  --input: 0 0% 0%;
+  --ring: 0 0% 0%;
   
-  --sidebar: 40 20% 95%;
-  --sidebar-foreground: 0 0% 15%;
-  --sidebar-primary: 350 30% 35%;
-  --sidebar-primary-foreground: 40 20% 97%;
-  --sidebar-accent: 40 30% 92%;
-  --sidebar-accent-foreground: 350 30% 35%;
-  --sidebar-border: 40 10% 80%;
-  --sidebar-ring: 350 30% 35%;
-
-  --radius: 0.25rem;
+  --radius: 0;
 }
 
 .dark {
-  /* Inverted but maintaining the "Old Book" feel - Dark leather binding */
-  --background: 20 10% 10%;
-  --foreground: 40 10% 90%;
+  /* Terminal Black */
+  --background: 0 0% 5%;
+  --foreground: 0 0% 95%;
 
-  --card: 20 10% 12%;
-  --card-foreground: 40 10% 90%;
+  --card: 0 0% 8%;
+  --card-foreground: 0 0% 95%;
 
-  --popover: 20 10% 10%;
-  --popover-foreground: 40 10% 90%;
+  --popover: 0 0% 8%;
+  --popover-foreground: 0 0% 95%;
 
-  --primary: 350 30% 45%;
-  --primary-foreground: 40 10% 90%;
+  --primary: 120 100% 50%; /* Terminal Green */
+  --primary-foreground: 0 0% 0%;
 
-  --secondary: 20 10% 15%;
-  --secondary-foreground: 40 10% 90%;
+  --secondary: 0 0% 15%;
+  --secondary-foreground: 0 0% 95%;
 
-  --muted: 20 10% 20%;
-  --muted-foreground: 40 10% 60%;
+  --muted: 0 0% 20%;
+  --muted-foreground: 0 0% 60%;
 
-  --accent: 20 10% 18%;
-  --accent-foreground: 40 10% 90%;
+  --accent: 0 0% 15%;
+  --accent-foreground: 0 0% 95%;
 
-  --destructive: 0 50% 50%;
-  --destructive-foreground: 40 10% 90%;
+  --destructive: 0 100% 50%;
+  --destructive-foreground: 0 0% 95%;
 
-  --border: 20 10% 20%;
-  --input: 20 10% 20%;
-  --ring: 350 30% 45%;
-  
-  --sidebar: 20 10% 12%;
-  --sidebar-foreground: 40 10% 90%;
-  --sidebar-primary: 350 30% 45%;
-  --sidebar-primary-foreground: 40 10% 90%;
-  --sidebar-accent: 20 10% 18%;
-  --sidebar-accent-foreground: 40 10% 90%;
-  --sidebar-border: 20 10% 20%;
-  --sidebar-ring: 350 30% 45%;
+  --border: 0 0% 20%;
+  --input: 0 0% 20%;
+  --ring: 120 100% 50%;
 }
 
 @layer base {
@@ -152,10 +113,59 @@
     @apply border-border;
   }
   body {
-    @apply font-serif-body antialiased bg-background text-foreground;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+    @apply font-mono antialiased bg-background text-foreground;
+    /* Minimal grid background */
+    background-image: linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px),
+                      linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px);
+    background-size: 20px 20px;
   }
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-serif-display font-medium tracking-tight;
+  ::selection {
+    background-color: var(--primary);
+    color: var(--primary-foreground);
   }
+}
+
+.glitch-hover {
+  position: relative;
+}
+.glitch-hover:hover::before {
+  content: attr(data-text);
+  position: absolute;
+  left: -2px;
+  text-shadow: 1px 0 #ff00c1;
+  top: 0;
+  color: var(--foreground);
+  background: var(--background);
+  overflow: hidden;
+  clip-path: inset(0 90% 0 0);
+  animation: noise-anim 2s infinite linear alternate-reverse;
+}
+.glitch-hover:hover::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 2px;
+  text-shadow: -1px 0 #00fff9;
+  top: 0;
+  color: var(--foreground);
+  background: var(--background);
+  overflow: hidden;
+  clip-path: inset(0 0 0 90%);
+  animation: noise-anim-2 3s infinite linear alternate-reverse;
+}
+
+@keyframes noise-anim {
+  0% { clip-path: inset(29% 0 54% 0); }
+  20% { clip-path: inset(78% 0 5% 0); }
+  40% { clip-path: inset(16% 0 69% 0); }
+  60% { clip-path: inset(3% 0 96% 0); }
+  80% { clip-path: inset(42% 0 19% 0); }
+  100% { clip-path: inset(88% 0 2% 0); }
+}
+@keyframes noise-anim-2 {
+  0% { clip-path: inset(12% 0 81% 0); }
+  20% { clip-path: inset(62% 0 25% 0); }
+  40% { clip-path: inset(37% 0 50% 0); }
+  60% { clip-path: inset(84% 0 3% 0); }
+  80% { clip-path: inset(5% 0 92% 0); }
+  100% { clip-path: inset(48% 0 39% 0); }
 }
