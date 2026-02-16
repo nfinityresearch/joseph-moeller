@@ -1,12 +1,26 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 import { storage } from "./storage";
 import { insertContactMessageSchema } from "@shared/schema";
+import { seedFromJSON } from "./seed";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
+
+  await seedFromJSON();
+
+  app.get("/api/site", (_req, res) => {
+    const sitePath = path.resolve(__dirname, "../content/site.json");
+    const site = JSON.parse(fs.readFileSync(sitePath, "utf-8"));
+    res.json(site);
+  });
 
   app.get("/api/quotes", async (_req, res) => {
     const quotes = await storage.getQuotes();

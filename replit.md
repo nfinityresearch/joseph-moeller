@@ -27,21 +27,33 @@ This is "Joseph Moeller | Zen Practice & Writing" — a literary archive website
 - **Framework**: Express 5 on Node.js with TypeScript (compiled via `tsx`)
 - **HTTP Server**: Node `http.createServer` wrapping Express
 - **API Design**: RESTful JSON API under `/api/` prefix
+  - `GET /api/site` — site config (title, subtitle, nav, author image) from `content/site.json`
   - `GET /api/quotes` — all quotes
   - `GET /api/quotes/random` — random quote
-  - `GET /api/books` — all books
+  - `GET /api/books` — all essays
+  - `GET /api/books/:id` — single essay by ID
   - `GET /api/sections` — all content sections
   - `GET /api/sections/:slug` — single section by slug
 - **Development**: Vite dev server runs as middleware for HMR (`server/vite.ts`)
 - **Production**: Static files served from `dist/public` with SPA fallback (`server/static.ts`)
 
+### Content (JSON Source of Truth)
+- **Directory**: `content/` — all site content is defined in editable JSON files
+  - `site.json` — site title, subtitle, author name/image, navigation items
+  - `quotes.json` — rotating zen quotes (text, source, year)
+  - `essays.json` — essay content (title, year, description, coverImage, body text)
+  - `sections.json` — page sections like biography (slug, title, content, sortOrder)
+- **Seed Script**: `server/seed.ts` — on every server startup, clears and re-inserts all content from JSON files into the database, ensuring JSON files are always the single source of truth
+- **Editing Content**: To change any text, quotes, essays, or images, edit the JSON files in `content/`. Changes take effect on next server restart.
+
 ### Database
 - **Database**: PostgreSQL (required via `DATABASE_URL` environment variable)
 - **ORM**: Drizzle ORM with `drizzle-zod` for schema validation
-- **Schema** (`shared/schema.ts`): Three tables:
+- **Schema** (`shared/schema.ts`): Tables:
   - `quotes` — id (serial), text, source, year
-  - `books` — id (serial), title, year, publisher, description, coverImage
+  - `books` — id (serial), title, year, publisher, description, coverImage, body
   - `sections` — id (serial), slug (unique), title, content, sortOrder
+  - `contact_messages` — id (serial), name, email, subject, message, createdAt
 - **Migrations**: Drizzle Kit with `drizzle-kit push` command (`npm run db:push`)
 - **Storage Layer**: `server/storage.ts` implements `IStorage` interface with `DatabaseStorage` class using `pg.Pool`
 
@@ -72,3 +84,4 @@ This is "Joseph Moeller | Zen Practice & Writing" — a literary archive website
 - 2026-02-16: Redesigned to classical minimal aesthetic with Crimson Pro serif font.
 - 2026-02-16: Added navigation for Books, Journalism, Music, Film, Art, Store, Contact sections.
 - 2026-02-16: Transformed site to Joseph Moeller zen writer. Removed music table/routes. Nav simplified to Writings and Biography. All content replaced with zen practice themes.
+- 2026-02-16: Moved all content to JSON files in `content/` directory as single source of truth. Added seed script that syncs JSON → DB on every startup. Added `/api/site` endpoint. Frontend header/nav/footer now driven by `site.json`.

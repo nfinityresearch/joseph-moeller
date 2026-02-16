@@ -13,14 +13,17 @@ export interface IStorage {
   getQuotes(): Promise<Quote[]>;
   getRandomQuote(): Promise<Quote | undefined>;
   insertQuote(quote: InsertQuote): Promise<Quote>;
+  clearQuotes(): Promise<void>;
 
   getBooks(): Promise<Book[]>;
   getBook(id: number): Promise<Book | undefined>;
   insertBook(book: InsertBook): Promise<Book>;
+  clearBooks(): Promise<void>;
 
   getSections(): Promise<Section[]>;
   getSection(slug: string): Promise<Section | undefined>;
   insertSection(section: InsertSection): Promise<Section>;
+  clearSections(): Promise<void>;
 
   insertContactMessage(msg: InsertContactMessage): Promise<ContactMessage>;
 }
@@ -70,6 +73,18 @@ export class DatabaseStorage implements IStorage {
   async insertSection(section: InsertSection): Promise<Section> {
     const [result] = await db.insert(sections).values(section).returning();
     return result;
+  }
+
+  async clearQuotes(): Promise<void> {
+    await db.delete(quotes);
+  }
+
+  async clearBooks(): Promise<void> {
+    await db.delete(books);
+  }
+
+  async clearSections(): Promise<void> {
+    await db.delete(sections);
   }
 
   async insertContactMessage(msg: InsertContactMessage): Promise<ContactMessage> {

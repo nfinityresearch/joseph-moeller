@@ -1,0 +1,10 @@
+{
+  "title": "Joseph Moeller",
+  "subtitle": "Zen Practice & Writing",
+  "authorName": "Joseph Moeller",
+  "authorImage": "/images/author-photo.jpg",
+  "navigation": [
+    { "label": "Writings", "path": "/writings" },
+    { "label": "Biography", "path": "/biography" }
+  ]
+}

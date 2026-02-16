@@ -23,18 +23,28 @@ interface Section {
   sortOrder: number | null;
 }
 
-const NAV_ITEMS = [
-  { label: "Writings", path: "/writings" },
-  { label: "Biography", path: "/biography" },
-  { label: "Contact", path: "/contact" },
-];
+interface SiteConfig {
+  title: string;
+  subtitle: string;
+  authorName: string;
+  authorImage: string;
+  navigation: { label: string; path: string }[];
+}
 
 function Navigation() {
   const [location] = useLocation();
+  const { data: site } = useQuery<SiteConfig>({
+    queryKey: ["/api/site"],
+  });
+
+  const navItems = site?.navigation || [
+    { label: "Writings", path: "/writings" },
+    { label: "Biography", path: "/biography" },
+  ];
 
   return (
     <nav className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted-foreground justify-center md:justify-end">
-      {NAV_ITEMS.map((item) => (
+      {navItems.map((item) => (
         <Link key={item.path} href={item.path}>
           <span
             data-testid={`link-${item.label.toLowerCase()}`}
@@ -380,29 +390,33 @@ function LoadingState() {
 }
 
 export default function Home() {
+  const { data: site } = useQuery<SiteConfig>({
+    queryKey: ["/api/site"],
+  });
+
   return (
     <div className="min-h-screen w-full flex flex-col bg-background selection:bg-primary/10 selection:text-primary transition-colors duration-1000">
       <header className="w-full max-w-5xl mx-auto p-8 md:p-12 flex flex-col md:flex-row justify-between items-center md:items-baseline gap-6 opacity-0 animate-[fade-in_2s_ease-out_forwards]">
         <Link href="/">
           <h1 className="text-lg font-serif tracking-wide text-foreground cursor-pointer hover:opacity-70 transition-opacity" data-testid="link-home">
-            Joseph Moeller
+            {site?.title || "Joseph Moeller"}
           </h1>
         </Link>
         <Navigation />
       </header>
 
       <main className="flex-1 w-full max-w-5xl mx-auto flex flex-col justify-center relative px-6 md:px-8">
-        <HomeRouter />
+        <HomeRouter authorImage={site?.authorImage || "/images/author-photo.jpg"} />
       </main>
 
       <footer className="w-full max-w-5xl mx-auto p-8 flex justify-center text-xs text-muted-foreground/50 font-serif italic">
-        <span className="animate-pulse mr-2">●</span> Zen Practice
+        <span className="animate-pulse mr-2">●</span> {site?.subtitle || "Zen Practice"}
       </footer>
     </div>
   );
 }
 
-function HomeRouter() {
+function HomeRouter({ authorImage }: { authorImage: string }) {
   const [location] = useLocation();
 
   if (location === "/") {
@@ -411,7 +425,7 @@ function HomeRouter() {
   if (location === "/writings") return <WritingsPage />;
   const essayMatch = location.match(/^\/writings\/(\d+)$/);
   if (essayMatch) return <ReadingPage id={essayMatch[1]} />;
-  if (location === "/biography") return <SectionPage slug="biography" authorImage="/images/author-photo.jpg" />;
+  if (location === "/biography") return <SectionPage slug="biography" authorImage={authorImage} />;
   if (location === "/contact") return <ContactPage />;
   return null;
 }
