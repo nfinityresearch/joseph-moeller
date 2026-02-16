@@ -1,0 +1,97 @@
+{
+  "navigation": [
+    { "label": "Books", "path": "/books" },
+    { "label": "Journalism", "path": "/journalism" },
+    { "label": "Music", "path": "/music" },
+    { "label": "Film", "path": "/film" },
+    { "label": "Art", "path": "/art" },
+    { "label": "Store", "path": "/store" },
+    { "label": "Contact", "path": "/contact" }
+  ],
+  "quotes": [
+    {
+      "text": "I was saying let me out of here before I was even born—it's such a gamble when you get a face.",
+      "source": "Blank Generation",
+      "year": "1977"
+    },
+    {
+      "text": "Time is a flat circle, cut from paper, burned at the edges.",
+      "source": "Notebooks",
+      "year": "1992"
+    },
+    {
+      "text": "Love comes in spurts.",
+      "source": "Blank Generation",
+      "year": "1977"
+    },
+    {
+      "text": "To me, 'blank' is a line where you can fill in anything.",
+      "source": "Interview",
+      "year": "1978"
+    },
+    {
+      "text": "I wanted to be the first one to know what it felt like to be dead.",
+      "source": "The Voidoid",
+      "year": "1996"
+    },
+    {
+      "text": "The aesthetic was always about removal. Taking away the excess until only the nerve endings remained.",
+      "source": "Godlike Genius",
+      "year": "2001"
+    },
+    {
+      "text": "Poetry is the only art form where the materials are free.",
+      "source": "Lecture",
+      "year": "1984"
+    },
+    {
+      "text": "You can't write a poem about a tree, but you can be a tree.",
+      "source": "Artifact",
+      "year": "Unknown"
+    }
+  ],
+  "books": [
+    {
+      "id": "b1",
+      "title": "I Dreamed I Was a Very Clean Tramp",
+      "year": "2013",
+      "publisher": "Ecco",
+      "description": "An autobiography covering his childhood, escape to New York, and the punk explosion.",
+      "coverImage": "/images/tramp.jpg"
+    },
+    {
+      "id": "b2",
+      "title": "Go Now",
+      "year": "1996",
+      "publisher": "Scribner",
+      "description": "A novel about a punk musician on a cross-country drive.",
+      "coverImage": "/images/gonow.jpg"
+    },
+    {
+      "id": "b3",
+      "title": "Godlike",
+      "year": "2005",
+      "publisher": "Akashic Books",
+      "description": "A novel set in the early 70s poetry scene.",
+      "coverImage": "/images/godlike.jpg"
+    }
+  ],
+  "music": [
+    {
+      "id": "m1",
+      "title": "Blank Generation",
+      "artist": "Richard Hell & The Voidoids",
+      "year": "1977",
+      "label": "Sire",
+      "format": "LP"
+    },
+    {
+      "id": "m2",
+      "title": "Destiny Street",
+      "artist": "Richard Hell & The Voidoids",
+      "year": "1982",
+      "label": "Red Star",
+      "format": "LP"
+    }
+  ]
+}
