@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { eq, desc } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/node-postgres";
 import pg from "pg";
 import {
@@ -46,7 +46,7 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getBooks(): Promise<Book[]> {
-    return db.select().from(books);
+    return db.select().from(books).orderBy(desc(books.year));
   }
 
   async getBook(id: number): Promise<Book | undefined> {
@@ -60,7 +60,7 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getMusic(): Promise<Music[]> {
-    return db.select().from(music);
+    return db.select().from(music).orderBy(desc(music.year));
   }
 
   async insertMusic(album: InsertMusic): Promise<Music> {
