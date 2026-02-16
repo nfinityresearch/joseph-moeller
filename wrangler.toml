@@ -1,0 +1,8 @@
+# Cloudflare Pages configuration for joseph-moeller
+# Connect this repo in Cloudflare Dashboard: Pages > Create project > Connect to Git
+# Build settings (or use wrangler.toml as source of truth):
+#   Build command: npm run build:client
+#   Build output directory: dist/public
+
+name = "joseph-moeller"
+pages_build_output_dir = "dist/public"
