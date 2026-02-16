@@ -66,78 +66,79 @@ function Navigation() {
   );
 }
 
-function BookCard({ book }: { book: Book }) {
-  const [expanded, setExpanded] = useState(false);
+function BookCard({ book, index }: { book: Book; index: number }) {
+  const [showDetail, setShowDetail] = useState(false);
 
   return (
-    <div
-      className="border-b border-border/30 py-6 first:pt-0"
+    <motion.div
+      className="border-b border-border/30 py-8 first:pt-0"
       data-testid={`card-book-${book.id}`}
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.06, duration: 0.4 }}
     >
-      <button
-        type="button"
-        className="w-full text-left cursor-pointer focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground/20 rounded-sm"
-        onClick={() => setExpanded(!expanded)}
-        aria-expanded={expanded}
-        aria-controls={`book-detail-${book.id}`}
-        data-testid={`button-expand-book-${book.id}`}
-      >
-        <div className="flex items-baseline justify-between gap-4">
-          <div className="flex items-baseline gap-3 min-w-0">
-            <h3 className="font-serif text-lg italic text-foreground/90 truncate">{book.title}</h3>
-            <span className="text-xs text-muted-foreground/50 shrink-0">{book.year}</span>
+      <div className="flex gap-6 md:gap-8">
+        {book.coverImage ? (
+          <div className="shrink-0">
+            <img
+              src={book.coverImage}
+              alt={book.title}
+              className="w-20 md:w-28 h-auto shadow-md border border-border/10"
+              loading="lazy"
+              data-testid={`img-cover-${book.id}`}
+            />
           </div>
-          <motion.svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="14"
-            height="14"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="text-muted-foreground/40 shrink-0"
-            animate={{ rotate: expanded ? 180 : 0 }}
-            transition={{ duration: 0.3 }}
-            aria-hidden="true"
-          >
-            <polyline points="6 9 12 15 18 9" />
-          </motion.svg>
-        </div>
-        <p className="text-xs text-muted-foreground/40 mt-1">{book.publisher}</p>
-      </button>
-
-      <AnimatePresence>
-        {expanded && (
-          <motion.div
-            id={`book-detail-${book.id}`}
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.4, ease: "easeInOut" }}
-            className="overflow-hidden"
-          >
-            <div className="flex gap-8 mt-6">
-              {book.coverImage && (
-                <div className="shrink-0">
-                  <img
-                    src={book.coverImage}
-                    alt={book.title}
-                    className="w-28 md:w-36 h-auto shadow-md border border-border/10"
-                    loading="lazy"
-                    data-testid={`img-cover-${book.id}`}
-                  />
-                </div>
-              )}
-              <div className="flex-1 min-w-0">
-                <p className="text-sm text-muted-foreground/70 leading-relaxed">{book.description}</p>
-              </div>
-            </div>
-          </motion.div>
+        ) : (
+          <div className="w-20 md:w-28 shrink-0 bg-muted/20 border border-border/10 flex items-center justify-center aspect-[3/4]">
+            <span className="text-[9px] text-muted-foreground/30 uppercase tracking-widest text-center px-2">{book.title}</span>
+          </div>
         )}
-      </AnimatePresence>
-    </div>
+        <div className="flex-1 min-w-0">
+          <h3 className="font-serif text-lg italic text-foreground/90">{book.title}</h3>
+          <p className="text-xs text-muted-foreground/50 mt-1">{book.year} · {book.publisher}</p>
+
+          <AnimatePresence>
+            {showDetail && (
+              <motion.p
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="text-sm text-muted-foreground/70 leading-relaxed mt-3 overflow-hidden"
+              >
+                {book.description}
+              </motion.p>
+            )}
+          </AnimatePresence>
+
+          <button
+            type="button"
+            className="mt-3 flex items-center gap-1.5 text-xs text-muted-foreground/40 hover:text-foreground/60 transition-colors cursor-pointer focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground/20 rounded-sm"
+            onClick={() => setShowDetail(!showDetail)}
+            aria-expanded={showDetail}
+            data-testid={`button-expand-book-${book.id}`}
+          >
+            <span>{showDetail ? "Less" : "More"}</span>
+            <motion.svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              animate={{ rotate: showDetail ? 180 : 0 }}
+              transition={{ duration: 0.3 }}
+              aria-hidden="true"
+            >
+              <polyline points="6 9 12 15 18 9" />
+            </motion.svg>
+          </button>
+        </div>
+      </div>
+    </motion.div>
   );
 }
 
@@ -154,8 +155,8 @@ function BooksPage() {
       <h2 className="text-lg font-serif mb-2 text-center text-muted-foreground">Books</h2>
       <p className="text-xs text-center text-muted-foreground/60 mb-16">Novels, poetry, essays, notebooks</p>
       <div>
-        {books?.map((book) => (
-          <BookCard key={book.id} book={book} />
+        {books?.map((book, i) => (
+          <BookCard key={book.id} book={book} index={i} />
         ))}
       </div>
     </motion.div>
