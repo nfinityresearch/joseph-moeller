@@ -341,7 +341,7 @@ function SectionPage({ slug, authorImage }: { slug: string; authorImage?: string
           <img
             src={authorImage}
             alt="Joseph Moeller"
-            className="w-64 md:w-80 h-auto shadow-md border border-border/10 grayscale-[30%]"
+            className="w-80 md:w-[28rem] h-auto shadow-md border border-border/10 grayscale-[30%]"
             data-testid="img-author-photo"
           />
         </div>
