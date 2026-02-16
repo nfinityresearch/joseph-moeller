@@ -2,10 +2,11 @@ import { eq, desc } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/node-postgres";
 import pg from "pg";
 import {
-  quotes, books, sections,
+  quotes, books, sections, contactMessages,
   type Quote, type InsertQuote,
   type Book, type InsertBook,
   type Section, type InsertSection,
+  type ContactMessage, type InsertContactMessage,
 } from "@shared/schema";
 
 export interface IStorage {
@@ -20,6 +21,8 @@ export interface IStorage {
   getSections(): Promise<Section[]>;
   getSection(slug: string): Promise<Section | undefined>;
   insertSection(section: InsertSection): Promise<Section>;
+
+  insertContactMessage(msg: InsertContactMessage): Promise<ContactMessage>;
 }
 
 const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL });
@@ -66,6 +69,11 @@ export class DatabaseStorage implements IStorage {
 
   async insertSection(section: InsertSection): Promise<Section> {
     const [result] = await db.insert(sections).values(section).returning();
+    return result;
+  }
+
+  async insertContactMessage(msg: InsertContactMessage): Promise<ContactMessage> {
+    const [result] = await db.insert(contactMessages).values(msg).returning();
     return result;
   }
 }

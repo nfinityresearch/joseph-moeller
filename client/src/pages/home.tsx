@@ -1,7 +1,7 @@
 import { GenerativeStream } from "@/components/generative-stream";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation } from "wouter";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 
 interface Book {
@@ -24,6 +24,7 @@ interface Section {
 const NAV_ITEMS = [
   { label: "Writings", path: "/writings" },
   { label: "Biography", path: "/biography" },
+  { label: "Contact", path: "/contact" },
 ];
 
 function Navigation() {
@@ -140,6 +141,146 @@ function WritingsPage() {
           <BookCard key={book.id} book={book} index={i} />
         ))}
       </div>
+    </motion.div>
+  );
+}
+
+function ContactPage() {
+  const [formData, setFormData] = useState({ name: "", email: "", subject: "", message: "" });
+  const [submitted, setSubmitted] = useState(false);
+
+  const mutation = useMutation({
+    mutationFn: async (data: typeof formData) => {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.message || "Something went wrong");
+      }
+      return res.json();
+    },
+    onSuccess: () => {
+      setSubmitted(true);
+      setFormData({ name: "", email: "", subject: "", message: "" });
+    },
+  });
+
+  if (submitted) {
+    return (
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="py-12 max-w-xl mx-auto w-full text-center">
+        <h2 className="text-lg font-serif mb-6 text-muted-foreground">Thank You</h2>
+        <p className="text-sm text-muted-foreground/70 leading-relaxed mb-8">
+          Your message has been received. We will be in touch.
+        </p>
+        <button
+          type="button"
+          onClick={() => setSubmitted(false)}
+          className="text-xs text-muted-foreground/50 hover:text-foreground/60 transition-colors cursor-pointer"
+          data-testid="button-send-another"
+        >
+          Send another message
+        </button>
+      </motion.div>
+    );
+  }
+
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="py-12 max-w-xl mx-auto w-full">
+      <h2 className="text-lg font-serif mb-2 text-center text-muted-foreground">Contact</h2>
+      <p className="text-xs text-center text-muted-foreground/60 mb-12">
+        For inquiries regarding retreats, teachings, rights, and permissions.
+      </p>
+
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          mutation.mutate(formData);
+        }}
+        className="space-y-6"
+      >
+        <div>
+          <label htmlFor="name" className="block text-xs uppercase tracking-widest text-muted-foreground/50 mb-2">
+            Name
+          </label>
+          <input
+            id="name"
+            type="text"
+            required
+            value={formData.name}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            className="w-full bg-transparent border-b border-border/40 focus:border-foreground/30 outline-none py-2 text-sm text-foreground/80 placeholder:text-muted-foreground/30 transition-colors font-serif"
+            placeholder="Your name"
+            data-testid="input-name"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="email" className="block text-xs uppercase tracking-widest text-muted-foreground/50 mb-2">
+            Email
+          </label>
+          <input
+            id="email"
+            type="email"
+            required
+            value={formData.email}
+            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            className="w-full bg-transparent border-b border-border/40 focus:border-foreground/30 outline-none py-2 text-sm text-foreground/80 placeholder:text-muted-foreground/30 transition-colors font-serif"
+            placeholder="your@email.com"
+            data-testid="input-email"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="subject" className="block text-xs uppercase tracking-widest text-muted-foreground/50 mb-2">
+            Subject
+          </label>
+          <input
+            id="subject"
+            type="text"
+            value={formData.subject}
+            onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+            className="w-full bg-transparent border-b border-border/40 focus:border-foreground/30 outline-none py-2 text-sm text-foreground/80 placeholder:text-muted-foreground/30 transition-colors font-serif"
+            placeholder="What is this regarding?"
+            data-testid="input-subject"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="message" className="block text-xs uppercase tracking-widest text-muted-foreground/50 mb-2">
+            Message
+          </label>
+          <textarea
+            id="message"
+            required
+            rows={6}
+            value={formData.message}
+            onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+            className="w-full bg-transparent border border-border/30 focus:border-foreground/20 outline-none p-3 text-sm text-foreground/80 placeholder:text-muted-foreground/30 transition-colors font-serif resize-none rounded-sm"
+            placeholder="Your message..."
+            data-testid="input-message"
+          />
+        </div>
+
+        {mutation.isError && (
+          <p className="text-xs text-destructive" data-testid="text-error">
+            {mutation.error?.message || "Something went wrong. Please try again."}
+          </p>
+        )}
+
+        <div className="pt-4">
+          <button
+            type="submit"
+            disabled={mutation.isPending}
+            className="w-full py-3 border border-border/40 hover:border-foreground/30 text-sm font-serif text-muted-foreground hover:text-foreground transition-all duration-300 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed rounded-sm"
+            data-testid="button-submit"
+          >
+            {mutation.isPending ? "Sending..." : "Send Message"}
+          </button>
+        </div>
+      </form>
     </motion.div>
   );
 }
@@ -268,5 +409,6 @@ function HomeRouter() {
   }
   if (location === "/writings") return <WritingsPage />;
   if (location === "/biography") return <SectionPage slug="biography" authorImage="/images/author-photo.jpg" />;
+  if (location === "/contact") return <ContactPage />;
   return null;
 }

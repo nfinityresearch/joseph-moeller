@@ -1,6 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
+import { insertContactMessageSchema } from "@shared/schema";
 
 export async function registerRoutes(
   httpServer: Server,
@@ -32,6 +33,15 @@ export async function registerRoutes(
     const section = await storage.getSection(req.params.slug);
     if (!section) return res.status(404).json({ message: "Section not found" });
     res.json(section);
+  });
+
+  app.post("/api/contact", async (req, res) => {
+    const parsed = insertContactMessageSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(400).json({ message: "Please fill in all required fields.", errors: parsed.error.flatten().fieldErrors });
+    }
+    const message = await storage.insertContactMessage(parsed.data);
+    res.status(201).json({ message: "Thank you for your message. We will be in touch." });
   });
 
   return httpServer;
