@@ -17,6 +17,7 @@ export const books = pgTable("books", {
   publisher: text("publisher").notNull(),
   description: text("description").notNull(),
   coverImage: text("cover_image"),
+  link: text("link"),
 });
 
 export const sections = pgTable("sections", {

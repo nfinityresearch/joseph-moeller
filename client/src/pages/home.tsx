@@ -4,13 +4,14 @@ import { Link, useLocation } from "wouter";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 
-interface Book {
+interface Essay {
   id: number;
   title: string;
   year: string;
   publisher: string;
   description: string;
   coverImage: string | null;
+  link: string | null;
 }
 
 interface Section {
@@ -48,84 +49,54 @@ function Navigation() {
   );
 }
 
-function BookCard({ book, index }: { book: Book; index: number }) {
-  const [showDetail, setShowDetail] = useState(false);
-
+function EssayCard({ essay, index }: { essay: Essay; index: number }) {
   return (
     <motion.div
       className="border-b border-border/30 py-8 first:pt-0"
-      data-testid={`card-book-${book.id}`}
+      data-testid={`card-essay-${essay.id}`}
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.06, duration: 0.4 }}
     >
-      <div className="flex gap-6 md:gap-8">
-        {book.coverImage ? (
+      <a
+        href={essay.link || "#"}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex gap-6 md:gap-8 group"
+        data-testid={`link-essay-${essay.id}`}
+      >
+        {essay.coverImage ? (
           <div className="shrink-0">
             <img
-              src={book.coverImage}
-              alt={book.title}
-              className="w-20 md:w-28 h-auto shadow-md border border-border/10"
+              src={essay.coverImage}
+              alt={essay.title}
+              className="w-20 md:w-28 h-auto shadow-md border border-border/10 group-hover:shadow-lg transition-shadow"
               loading="lazy"
-              data-testid={`img-cover-${book.id}`}
+              data-testid={`img-cover-${essay.id}`}
             />
           </div>
         ) : (
           <div className="w-20 md:w-28 shrink-0 bg-muted/20 border border-border/10 flex items-center justify-center aspect-[3/4]">
-            <span className="text-[9px] text-muted-foreground/30 uppercase tracking-widest text-center px-2">{book.title}</span>
+            <span className="text-[9px] text-muted-foreground/30 uppercase tracking-widest text-center px-2">{essay.title}</span>
           </div>
         )}
         <div className="flex-1 min-w-0">
-          <h3 className="font-serif text-lg italic text-foreground/90">{book.title}</h3>
-          <p className="text-xs text-muted-foreground/50 mt-1">{book.year} · {book.publisher}</p>
-
-          <AnimatePresence>
-            {showDetail && (
-              <motion.p
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: "auto", opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.3 }}
-                className="text-sm text-muted-foreground/70 leading-relaxed mt-3 overflow-hidden"
-              >
-                {book.description}
-              </motion.p>
-            )}
-          </AnimatePresence>
-
-          <button
-            type="button"
-            className="mt-3 flex items-center gap-1.5 text-xs text-muted-foreground/40 hover:text-foreground/60 transition-colors cursor-pointer focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground/20 rounded-sm"
-            onClick={() => setShowDetail(!showDetail)}
-            aria-expanded={showDetail}
-            data-testid={`button-expand-book-${book.id}`}
-          >
-            <span>{showDetail ? "Less" : "More"}</span>
-            <motion.svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="12"
-              height="12"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              animate={{ rotate: showDetail ? 180 : 0 }}
-              transition={{ duration: 0.3 }}
-              aria-hidden="true"
-            >
-              <polyline points="6 9 12 15 18 9" />
-            </motion.svg>
-          </button>
+          <h3 className="font-serif text-lg italic text-foreground/90 group-hover:text-foreground transition-colors">{essay.title}</h3>
+          <p className="text-xs text-muted-foreground/50 mt-1">{essay.year}</p>
+          <p className="text-sm text-muted-foreground/60 leading-relaxed mt-3">
+            {essay.description}
+          </p>
+          <span className="inline-block mt-3 text-xs text-muted-foreground/40 group-hover:text-foreground/60 transition-colors">
+            Read on Substack →
+          </span>
         </div>
-      </div>
+      </a>
     </motion.div>
   );
 }
 
 function WritingsPage() {
-  const { data: books, isLoading } = useQuery<Book[]>({
+  const { data: essays, isLoading } = useQuery<Essay[]>({
     queryKey: ["/api/books"],
     queryFn: () => fetch("/api/books").then(r => r.json()),
   });
@@ -135,10 +106,10 @@ function WritingsPage() {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="py-12 max-w-3xl mx-auto w-full">
       <h2 className="text-lg font-serif mb-2 text-center text-muted-foreground">Writings</h2>
-      <p className="text-xs text-center text-muted-foreground/60 mb-16">Books on Zen practice, meditation, and contemplative living</p>
+      <p className="text-xs text-center text-muted-foreground/60 mb-16">Essays on Zen practice, meditation, and contemplative living</p>
       <div>
-        {books?.map((book, i) => (
-          <BookCard key={book.id} book={book} index={i} />
+        {essays?.map((essay, i) => (
+          <EssayCard key={essay.id} essay={essay} index={i} />
         ))}
       </div>
     </motion.div>
