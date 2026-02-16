@@ -12,6 +12,7 @@ interface Essay {
   description: string;
   coverImage: string | null;
   link: string | null;
+  body: string | null;
 }
 
 interface Section {
@@ -58,19 +59,13 @@ function EssayCard({ essay, index }: { essay: Essay; index: number }) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.06, duration: 0.4 }}
     >
-      <a
-        href={essay.link || "#"}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="flex gap-6 md:gap-8 group"
-        data-testid={`link-essay-${essay.id}`}
-      >
+      <div className="flex gap-6 md:gap-8">
         {essay.coverImage ? (
           <div className="shrink-0">
             <img
               src={essay.coverImage}
               alt={essay.title}
-              className="w-20 md:w-28 h-auto shadow-md border border-border/10 group-hover:shadow-lg transition-shadow"
+              className="w-20 md:w-28 h-auto shadow-md border border-border/10"
               loading="lazy"
               data-testid={`img-cover-${essay.id}`}
             />
@@ -81,16 +76,18 @@ function EssayCard({ essay, index }: { essay: Essay; index: number }) {
           </div>
         )}
         <div className="flex-1 min-w-0">
-          <h3 className="font-serif text-lg italic text-foreground/90 group-hover:text-foreground transition-colors">{essay.title}</h3>
+          <h3 className="font-serif text-lg italic text-foreground/90">{essay.title}</h3>
           <p className="text-xs text-muted-foreground/50 mt-1">{essay.year}</p>
           <p className="text-sm text-muted-foreground/60 leading-relaxed mt-3">
             {essay.description}
           </p>
-          <span className="inline-block mt-3 text-xs text-muted-foreground/40 group-hover:text-foreground/60 transition-colors">
-            Read on Substack →
-          </span>
+          <Link href={`/writings/${essay.id}`}>
+            <span className="inline-block mt-3 text-xs text-muted-foreground/40 hover:text-foreground/60 transition-colors cursor-pointer" data-testid={`link-read-${essay.id}`}>
+              Read
+            </span>
+          </Link>
         </div>
-      </a>
+      </div>
     </motion.div>
   );
 }
@@ -112,6 +109,51 @@ function WritingsPage() {
           <EssayCard key={essay.id} essay={essay} index={i} />
         ))}
       </div>
+    </motion.div>
+  );
+}
+
+function ReadingPage({ id }: { id: string }) {
+  const { data: essay, isLoading } = useQuery<Essay>({
+    queryKey: ["/api/books", id],
+    queryFn: () => fetch(`/api/books/${id}`).then(r => r.json()),
+  });
+
+  if (isLoading) return <LoadingState />;
+  if (!essay) return <LoadingState />;
+
+  const paragraphs = essay.body?.split('\n\n').filter(p => p.trim()) || [];
+
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="py-12 max-w-2xl mx-auto w-full">
+      <Link href="/writings">
+        <span className="text-xs text-muted-foreground/40 hover:text-foreground/60 transition-colors cursor-pointer" data-testid="link-back-writings">
+          Writings
+        </span>
+      </Link>
+
+      <header className="mt-10 mb-16">
+        <h1 className="text-2xl md:text-3xl font-serif italic text-foreground/90 leading-snug" data-testid="text-essay-title">
+          {essay.title}
+        </h1>
+        <p className="text-xs text-muted-foreground/50 mt-3">{essay.year}</p>
+      </header>
+
+      <article className="space-y-6">
+        {paragraphs.map((paragraph, i) => (
+          <p key={i} className="text-base text-foreground/75 leading-[1.85] font-serif">
+            {paragraph.trim()}
+          </p>
+        ))}
+      </article>
+
+      <footer className="mt-20 pt-8 border-t border-border/20">
+        <Link href="/writings">
+          <span className="text-xs text-muted-foreground/40 hover:text-foreground/60 transition-colors cursor-pointer" data-testid="link-back-writings-bottom">
+            Back to Writings
+          </span>
+        </Link>
+      </footer>
     </motion.div>
   );
 }
@@ -367,6 +409,8 @@ function HomeRouter() {
     return <GenerativeStream className="w-full py-12" />;
   }
   if (location === "/writings") return <WritingsPage />;
+  const essayMatch = location.match(/^\/writings\/(\d+)$/);
+  if (essayMatch) return <ReadingPage id={essayMatch[1]} />;
   if (location === "/biography") return <SectionPage slug="biography" authorImage="/images/author-photo.jpg" />;
   if (location === "/contact") return <ContactPage />;
   return null;

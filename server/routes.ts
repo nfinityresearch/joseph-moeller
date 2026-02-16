@@ -24,6 +24,14 @@ export async function registerRoutes(
     res.json(books);
   });
 
+  app.get("/api/books/:id", async (req, res) => {
+    const id = parseInt(req.params.id, 10);
+    if (isNaN(id)) return res.status(400).json({ message: "Invalid ID" });
+    const book = await storage.getBook(id);
+    if (!book) return res.status(404).json({ message: "Essay not found" });
+    res.json(book);
+  });
+
   app.get("/api/sections", async (_req, res) => {
     const sections = await storage.getSections();
     res.json(sections);
