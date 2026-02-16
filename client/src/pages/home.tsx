@@ -364,19 +364,7 @@ function HomeRouter() {
   const [location] = useLocation();
 
   if (location === "/") {
-    return (
-      <>
-        <GenerativeStream className="w-full py-12" />
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 2, duration: 2 }}
-          className="absolute bottom-12 left-1/2 -translate-x-1/2 text-[10px] text-muted-foreground/40 font-serif tracking-widest uppercase"
-        >
-          Fig. 1 — The Still Point
-        </motion.div>
-      </>
-    );
+    return <GenerativeStream className="w-full py-12" />;
   }
   if (location === "/writings") return <WritingsPage />;
   if (location === "/biography") return <SectionPage slug="biography" authorImage="/images/author-photo.jpg" />;
