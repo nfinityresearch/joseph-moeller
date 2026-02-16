@@ -13,15 +13,6 @@ interface Book {
   coverImage: string | null;
 }
 
-interface Album {
-  id: number;
-  title: string;
-  artist: string;
-  year: string;
-  label: string;
-  format: string;
-}
-
 interface Section {
   id: number;
   slug: string;
@@ -30,19 +21,9 @@ interface Section {
   sortOrder: number | null;
 }
 
-const ALBUM_COVERS: Record<string, string> = {
-  "Blank Generation": "/images/covers/blank-generation.png",
-  "Destiny Street": "/images/covers/destiny-street.png",
-};
-
 const NAV_ITEMS = [
-  { label: "Books", path: "/books" },
-  { label: "Journalism", path: "/journalism" },
-  { label: "Music", path: "/music" },
-  { label: "Film", path: "/film" },
-  { label: "Art", path: "/art" },
-  { label: "Store", path: "/store" },
-  { label: "Contact", path: "/contact" },
+  { label: "Writings", path: "/writings" },
+  { label: "Biography", path: "/biography" },
 ];
 
 function Navigation() {
@@ -142,7 +123,7 @@ function BookCard({ book, index }: { book: Book; index: number }) {
   );
 }
 
-function BooksPage() {
+function WritingsPage() {
   const { data: books, isLoading } = useQuery<Book[]>({
     queryKey: ["/api/books"],
     queryFn: () => fetch("/api/books").then(r => r.json()),
@@ -152,65 +133,13 @@ function BooksPage() {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="py-12 max-w-3xl mx-auto w-full">
-      <h2 className="text-lg font-serif mb-2 text-center text-muted-foreground">Books</h2>
-      <p className="text-xs text-center text-muted-foreground/60 mb-16">Novels, poetry, essays, notebooks</p>
+      <h2 className="text-lg font-serif mb-2 text-center text-muted-foreground">Writings</h2>
+      <p className="text-xs text-center text-muted-foreground/60 mb-16">Books on Zen practice, meditation, and contemplative living</p>
       <div>
         {books?.map((book, i) => (
           <BookCard key={book.id} book={book} index={i} />
         ))}
       </div>
-    </motion.div>
-  );
-}
-
-function MusicPage() {
-  const { data: albums, isLoading } = useQuery<Album[]>({
-    queryKey: ["/api/music"],
-    queryFn: () => fetch("/api/music").then(r => r.json()),
-  });
-
-  if (isLoading) return <LoadingState />;
-
-  const grouped: Record<string, Album[]> = {};
-  albums?.forEach((album) => {
-    const key = album.artist;
-    if (!grouped[key]) grouped[key] = [];
-    grouped[key].push(album);
-  });
-
-  return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="py-12 max-w-3xl mx-auto w-full">
-      <h2 className="text-lg font-serif mb-2 text-center text-muted-foreground">Discography</h2>
-      <p className="text-xs text-center text-muted-foreground/60 mb-16">Neon Boys, Television, Heartbreakers, Voidoids, Dim Stars</p>
-      {Object.entries(grouped).map(([artist, items]) => (
-        <div key={artist} className="mb-14">
-          <h3 className="text-xs uppercase tracking-widest text-muted-foreground/50 mb-6 border-b border-border/20 pb-2">{artist}</h3>
-          <div>
-            {items.map((album) => {
-              const cover = ALBUM_COVERS[album.title];
-              return (
-                <div key={album.id} className="flex items-center gap-5 py-4 border-b border-border/15 group" data-testid={`row-album-${album.id}`}>
-                  {cover ? (
-                    <img src={cover} alt={album.title} className="w-14 h-14 object-cover shadow-sm border border-border/10 shrink-0" loading="lazy" />
-                  ) : (
-                    <div className="w-14 h-14 bg-muted/30 border border-border/10 shrink-0 flex items-center justify-center">
-                      <span className="text-[8px] text-muted-foreground/30 uppercase tracking-wider">{album.format}</span>
-                    </div>
-                  )}
-                  <div className="flex-1 min-w-0 flex flex-col md:flex-row md:items-baseline md:justify-between gap-1">
-                    <div className="flex items-baseline gap-3">
-                      <h4 className="font-serif text-base italic group-hover:text-primary transition-colors">{album.title}</h4>
-                    </div>
-                    <div className="text-xs text-muted-foreground/50 shrink-0">
-                      {album.year} · {album.label} · {album.format}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      ))}
     </motion.div>
   );
 }
@@ -290,7 +219,7 @@ export default function Home() {
       <header className="w-full max-w-5xl mx-auto p-8 md:p-12 flex flex-col md:flex-row justify-between items-center md:items-baseline gap-6 opacity-0 animate-[fade-in_2s_ease-out_forwards]">
         <Link href="/">
           <h1 className="text-lg font-serif tracking-wide text-foreground cursor-pointer hover:opacity-70 transition-opacity" data-testid="link-home">
-            Richard Hell
+            Joseph Moeller
           </h1>
         </Link>
         <Navigation />
@@ -301,7 +230,7 @@ export default function Home() {
       </main>
 
       <footer className="w-full max-w-5xl mx-auto p-8 flex justify-center text-xs text-muted-foreground/50 font-serif italic">
-        <span className="animate-pulse mr-2">●</span> Live Archive
+        <span className="animate-pulse mr-2">●</span> Zen Practice
       </footer>
     </div>
   );
@@ -320,15 +249,12 @@ function HomeRouter() {
           transition={{ delay: 2, duration: 2 }}
           className="absolute bottom-12 left-1/2 -translate-x-1/2 text-[10px] text-muted-foreground/40 font-serif tracking-widest uppercase"
         >
-          Fig. 1 — The Living Text
+          Fig. 1 — The Still Point
         </motion.div>
       </>
     );
   }
-  if (location === "/books") return <BooksPage />;
-  if (location === "/music") return <MusicPage />;
-  if (["/journalism", "/film", "/art", "/store", "/contact", "/links"].includes(location)) {
-    return <SectionPage slug={location.slice(1)} />;
-  }
+  if (location === "/writings") return <WritingsPage />;
+  if (location === "/biography") return <SectionPage slug="biography" />;
   return null;
 }

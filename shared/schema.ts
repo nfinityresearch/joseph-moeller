@@ -19,15 +19,6 @@ export const books = pgTable("books", {
   coverImage: text("cover_image"),
 });
 
-export const music = pgTable("music", {
-  id: serial("id").primaryKey(),
-  title: text("title").notNull(),
-  artist: text("artist").notNull(),
-  year: text("year").notNull(),
-  label: text("label").notNull(),
-  format: text("format").notNull(),
-});
-
 export const sections = pgTable("sections", {
   id: serial("id").primaryKey(),
   slug: text("slug").notNull().unique(),
@@ -38,14 +29,11 @@ export const sections = pgTable("sections", {
 
 export const insertQuoteSchema = createInsertSchema(quotes).omit({ id: true });
 export const insertBookSchema = createInsertSchema(books).omit({ id: true });
-export const insertMusicSchema = createInsertSchema(music).omit({ id: true });
 export const insertSectionSchema = createInsertSchema(sections).omit({ id: true });
 
 export type InsertQuote = z.infer<typeof insertQuoteSchema>;
 export type Quote = typeof quotes.$inferSelect;
 export type InsertBook = z.infer<typeof insertBookSchema>;
 export type Book = typeof books.$inferSelect;
-export type InsertMusic = z.infer<typeof insertMusicSchema>;
-export type Music = typeof music.$inferSelect;
 export type InsertSection = z.infer<typeof insertSectionSchema>;
 export type Section = typeof sections.$inferSelect;

@@ -23,11 +23,6 @@ export async function registerRoutes(
     res.json(books);
   });
 
-  app.get("/api/music", async (_req, res) => {
-    const albums = await storage.getMusic();
-    res.json(albums);
-  });
-
   app.get("/api/sections", async (_req, res) => {
     const sections = await storage.getSections();
     res.json(sections);

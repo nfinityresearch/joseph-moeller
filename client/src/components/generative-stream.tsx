@@ -57,7 +57,7 @@ export function GenerativeStream({ className }: GenerativeStreamProps) {
               className="absolute"
             >
               <span className="text-sm italic text-muted-foreground animate-pulse" data-testid="status-thinking">
-                surfacing artifact...
+                breathing...
               </span>
             </motion.div>
           ) : currentQuote ? (
@@ -88,7 +88,7 @@ export function GenerativeStream({ className }: GenerativeStreamProps) {
               animate={{ opacity: 1 }}
             >
               <span className="text-sm italic text-muted-foreground animate-pulse">
-                opening archive...
+                settling into stillness...
               </span>
             </motion.div>
           )}

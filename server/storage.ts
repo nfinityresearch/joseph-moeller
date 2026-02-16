@@ -2,10 +2,9 @@ import { eq, desc } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/node-postgres";
 import pg from "pg";
 import {
-  quotes, books, music, sections,
+  quotes, books, sections,
   type Quote, type InsertQuote,
   type Book, type InsertBook,
-  type Music, type InsertMusic,
   type Section, type InsertSection,
 } from "@shared/schema";
 
@@ -17,9 +16,6 @@ export interface IStorage {
   getBooks(): Promise<Book[]>;
   getBook(id: number): Promise<Book | undefined>;
   insertBook(book: InsertBook): Promise<Book>;
-
-  getMusic(): Promise<Music[]>;
-  insertMusic(album: InsertMusic): Promise<Music>;
 
   getSections(): Promise<Section[]>;
   getSection(slug: string): Promise<Section | undefined>;
@@ -56,15 +52,6 @@ export class DatabaseStorage implements IStorage {
 
   async insertBook(book: InsertBook): Promise<Book> {
     const [result] = await db.insert(books).values(book).returning();
-    return result;
-  }
-
-  async getMusic(): Promise<Music[]> {
-    return db.select().from(music).orderBy(desc(music.year));
-  }
-
-  async insertMusic(album: InsertMusic): Promise<Music> {
-    const [result] = await db.insert(music).values(album).returning();
     return result;
   }
 
