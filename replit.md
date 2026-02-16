@@ -1,13 +1,14 @@
 # Overview
 
-This is a "Richard Hell | Generative Archive" — a literary/artistic archive website built as a full-stack TypeScript application. It presents books, music, quotes, and content sections in a visually refined, classical layout with generative/randomized elements (rotating quotes surfaced from the database). The design aesthetic is minimal and editorial, using serif typography (Crimson Pro) on warm paper-white backgrounds.
+This is "Joseph Moeller | Zen Practice & Writing" — a literary archive website for the writer Joseph Moeller, who writes on Zen practices. Built as a full-stack TypeScript application, it presents books/writings, quotes, and a biography in a visually refined, classical layout with generative/randomized elements (rotating zen quotes surfaced from the database). The design aesthetic is minimal and editorial, using serif typography (Crimson Pro) on warm paper-white backgrounds.
 
 ## User Preferences
 
 - Preferred communication style: Simple, everyday language.
 - Design direction: Classical, minimal, small serif type (Sabon-style). White space. Not inauthentic.
 - Content should be data-driven (JSON/database), not hardcoded into component files.
-- Generative elements: AI-like surfacing of quotes/extracts that keep the site "alive."
+- Generative elements: Rotating zen quotes/extracts that keep the site "alive."
+- Navigation: Two items only — Writings and Biography.
 
 ## System Architecture
 
@@ -29,7 +30,6 @@ This is a "Richard Hell | Generative Archive" — a literary/artistic archive we
   - `GET /api/quotes` — all quotes
   - `GET /api/quotes/random` — random quote
   - `GET /api/books` — all books
-  - `GET /api/music` — all music/albums
   - `GET /api/sections` — all content sections
   - `GET /api/sections/:slug` — single section by slug
 - **Development**: Vite dev server runs as middleware for HMR (`server/vite.ts`)
@@ -38,10 +38,9 @@ This is a "Richard Hell | Generative Archive" — a literary/artistic archive we
 ### Database
 - **Database**: PostgreSQL (required via `DATABASE_URL` environment variable)
 - **ORM**: Drizzle ORM with `drizzle-zod` for schema validation
-- **Schema** (`shared/schema.ts`): Four tables:
+- **Schema** (`shared/schema.ts`): Three tables:
   - `quotes` — id (serial), text, source, year
   - `books` — id (serial), title, year, publisher, description, coverImage
-  - `music` — id (serial), title, artist, year, label, format
   - `sections` — id (serial), slug (unique), title, content, sortOrder
 - **Migrations**: Drizzle Kit with `drizzle-kit push` command (`npm run db:push`)
 - **Storage Layer**: `server/storage.ts` implements `IStorage` interface with `DatabaseStorage` class using `pg.Pool`
@@ -72,3 +71,4 @@ This is a "Richard Hell | Generative Archive" — a literary/artistic archive we
 - 2026-02-16: Converted from static JSON to full-stack with PostgreSQL database. All content (quotes, books, music, sections) now served via API routes.
 - 2026-02-16: Redesigned to classical minimal aesthetic with Crimson Pro serif font.
 - 2026-02-16: Added navigation for Books, Journalism, Music, Film, Art, Store, Contact sections.
+- 2026-02-16: Transformed site to Joseph Moeller zen writer. Removed music table/routes. Nav simplified to Writings and Biography. All content replaced with zen practice themes.
