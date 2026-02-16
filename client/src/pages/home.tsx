@@ -144,7 +144,7 @@ function WritingsPage() {
   );
 }
 
-function SectionPage({ slug }: { slug: string }) {
+function SectionPage({ slug, authorImage }: { slug: string; authorImage?: string }) {
   const { data: section, isLoading } = useQuery<Section>({
     queryKey: ["/api/sections", slug],
     queryFn: () => fetch(`/api/sections/${slug}`).then(r => r.json()),
@@ -158,6 +158,18 @@ function SectionPage({ slug }: { slug: string }) {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="py-12 max-w-3xl mx-auto w-full">
       <h2 className="text-lg font-serif mb-16 text-center text-muted-foreground">{section.title}</h2>
+
+      {authorImage && (
+        <div className="flex justify-center mb-14">
+          <img
+            src={authorImage}
+            alt="Joseph Moeller"
+            className="w-64 md:w-80 h-auto shadow-md border border-border/10 grayscale-[30%]"
+            data-testid="img-author-photo"
+          />
+        </div>
+      )}
+
       <div className="space-y-8">
         {blocks.map((block, i) => {
           const trimmed = block.trim();
@@ -255,6 +267,6 @@ function HomeRouter() {
     );
   }
   if (location === "/writings") return <WritingsPage />;
-  if (location === "/biography") return <SectionPage slug="biography" />;
+  if (location === "/biography") return <SectionPage slug="biography" authorImage="/images/author-photo.jpg" />;
   return null;
 }
