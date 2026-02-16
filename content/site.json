@@ -5,6 +5,7 @@
   "authorImage": "/images/author-photo.jpg",
   "navigation": [
     { "label": "Writings", "path": "/writings" },
-    { "label": "Biography", "path": "/biography" }
+    { "label": "Biography", "path": "/biography" },
+    { "label": "Contact", "path": "/contact" }
   ]
 }
