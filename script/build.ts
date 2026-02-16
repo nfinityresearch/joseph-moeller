@@ -35,6 +35,10 @@ const allowlist = [
 async function buildAll() {
   await rm("dist", { recursive: true, force: true });
 
+  console.log("copying content to client/public...");
+  const { execSync } = await import("child_process");
+  execSync("npx tsx script/copy-content.ts", { stdio: "inherit" });
+
   console.log("building client...");
   await viteBuild();
 

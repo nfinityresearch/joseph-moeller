@@ -3,5 +3,6 @@ dist
 .local
 .DS_Store
 server/public
+client/public/*.json
 vite.config.ts.*
 *.tar.gz

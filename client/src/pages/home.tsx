@@ -29,17 +29,20 @@ interface SiteConfig {
   authorName: string;
   authorImage: string;
   navigation: { label: string; path: string }[];
+  contactFormEndpoint?: string;
 }
 
 function Navigation() {
   const [location] = useLocation();
   const { data: site } = useQuery<SiteConfig>({
-    queryKey: ["/api/site"],
+    queryKey: ["site"],
+    queryFn: () => import("@/lib/api").then((m) => m.fetchSite()),
   });
 
   const navItems = site?.navigation || [
     { label: "Writings", path: "/writings" },
     { label: "Biography", path: "/biography" },
+    { label: "Contact", path: "/contact" },
   ];
 
   return (
@@ -104,8 +107,8 @@ function EssayCard({ essay, index }: { essay: Essay; index: number }) {
 
 function WritingsPage() {
   const { data: essays, isLoading } = useQuery<Essay[]>({
-    queryKey: ["/api/books"],
-    queryFn: () => fetch("/api/books").then(r => r.json()),
+    queryKey: ["books"],
+    queryFn: () => import("@/lib/api").then((m) => m.fetchBooks()),
   });
 
   if (isLoading) return <LoadingState />;
@@ -125,8 +128,8 @@ function WritingsPage() {
 
 function ReadingPage({ id }: { id: string }) {
   const { data: essay, isLoading } = useQuery<Essay>({
-    queryKey: ["/api/books", id],
-    queryFn: () => fetch(`/api/books/${id}`).then(r => r.json()),
+    queryKey: ["books", id],
+    queryFn: () => import("@/lib/api").then((m) => m.fetchBook(id)),
   });
 
   if (isLoading) return <LoadingState />;
@@ -168,18 +171,28 @@ function ReadingPage({ id }: { id: string }) {
   );
 }
 
-function ContactPage() {
+function ContactPage({ contactFormEndpoint }: { contactFormEndpoint?: string }) {
   const [formData, setFormData] = useState({ name: "", email: "", subject: "", message: "" });
   const [submitted, setSubmitted] = useState(false);
 
   const mutation = useMutation({
     mutationFn: async (data: typeof formData) => {
-      const res = await fetch("/api/contact", {
+      const url =
+        contactFormEndpoint && !contactFormEndpoint.includes("YOUR_FORM_ID")
+          ? contactFormEndpoint
+          : "/api/contact";
+      const isFormspree = url.includes("formspree.io");
+
+      const res = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: isFormspree
+          ? JSON.stringify({ name: data.name, email: data.email, subject: data.subject, message: data.message, _replyto: data.email })
+          : JSON.stringify(data),
       });
+
       if (!res.ok) {
+        if (isFormspree) throw new Error("Something went wrong. Please try again.");
         const err = await res.json();
         throw new Error(err.message || "Something went wrong");
       }
@@ -310,8 +323,8 @@ function ContactPage() {
 
 function SectionPage({ slug, authorImage }: { slug: string; authorImage?: string }) {
   const { data: section, isLoading } = useQuery<Section>({
-    queryKey: ["/api/sections", slug],
-    queryFn: () => fetch(`/api/sections/${slug}`).then(r => r.json()),
+    queryKey: ["sections", slug],
+    queryFn: () => import("@/lib/api").then((m) => m.fetchSection(slug)),
   });
 
   if (isLoading) return <LoadingState />;
@@ -391,7 +404,8 @@ function LoadingState() {
 
 export default function Home() {
   const { data: site } = useQuery<SiteConfig>({
-    queryKey: ["/api/site"],
+    queryKey: ["site"],
+    queryFn: () => import("@/lib/api").then((m) => m.fetchSite()),
   });
 
   return (
@@ -406,7 +420,7 @@ export default function Home() {
       </header>
 
       <main className="flex-1 w-full max-w-5xl mx-auto flex flex-col justify-center relative px-6 md:px-8">
-        <HomeRouter authorImage={site?.authorImage || "/images/author-photo.jpg"} />
+        <HomeRouter authorImage={site?.authorImage || "/images/author-photo.jpg"} site={site} />
       </main>
 
       <footer className="w-full max-w-5xl mx-auto p-8 flex justify-center text-xs text-muted-foreground/50 font-serif italic">
@@ -416,7 +430,7 @@ export default function Home() {
   );
 }
 
-function HomeRouter({ authorImage }: { authorImage: string }) {
+function HomeRouter({ authorImage, site }: { authorImage: string; site?: SiteConfig | null }) {
   const [location] = useLocation();
 
   if (location === "/") {
@@ -426,6 +440,6 @@ function HomeRouter({ authorImage }: { authorImage: string }) {
   const essayMatch = location.match(/^\/writings\/(\d+)$/);
   if (essayMatch) return <ReadingPage id={essayMatch[1]} />;
   if (location === "/biography") return <SectionPage slug="biography" authorImage={authorImage} />;
-  if (location === "/contact") return <ContactPage />;
+  if (location === "/contact") return <ContactPage contactFormEndpoint={site?.contactFormEndpoint} />;
   return null;
 }

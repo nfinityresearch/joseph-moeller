@@ -7,5 +7,6 @@
     { "label": "Writings", "path": "/writings" },
     { "label": "Biography", "path": "/biography" },
     { "label": "Contact", "path": "/contact" }
-  ]
+  ],
+  "contactFormEndpoint": "https://formspree.io/f/YOUR_FORM_ID"
 }

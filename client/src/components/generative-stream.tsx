@@ -15,8 +15,8 @@ interface GenerativeStreamProps {
 
 export function GenerativeStream({ className }: GenerativeStreamProps) {
   const { data: quotes } = useQuery<Quote[]>({
-    queryKey: ["/api/quotes"],
-    queryFn: () => fetch("/api/quotes").then(r => r.json()),
+    queryKey: ["quotes"],
+    queryFn: () => import("@/lib/api").then((m) => m.fetchQuotes()),
   });
 
   const [currentQuote, setCurrentQuote] = useState<Quote | null>(null);
