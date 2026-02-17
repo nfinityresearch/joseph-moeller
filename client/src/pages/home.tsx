@@ -434,7 +434,7 @@ function HomeRouter({ authorImage, site }: { authorImage: string; site?: SiteCon
   const [location] = useLocation();
 
   if (location === "/") {
-    return <GenerativeStream className="w-full py-12" />;
+    return <GenerativeStream className="w-full pt-6 pb-12" />;
   }
   if (location === "/writings") return <WritingsPage />;
   const essayMatch = location.match(/^\/writings\/(\d+)$/);

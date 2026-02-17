@@ -46,7 +46,7 @@ export function GenerativeStream({ className }: GenerativeStreamProps) {
 
   return (
     <div className={className}>
-      <div className="relative flex flex-col justify-center items-center text-center py-8 md:py-12">
+      <div className="relative flex flex-col justify-center items-center text-center pt-4 pb-8 md:pt-6 md:pb-12">
         <div className="relative w-[320px] h-[320px] sm:w-[400px] sm:h-[400px] md:w-[500px] md:h-[500px] lg:w-[560px] lg:h-[560px]">
           <img
             src="/images/enso.png"
