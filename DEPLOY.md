@@ -2,6 +2,12 @@
 
 This app works on Cloudflare Pages (static hosting) with no backend required.
 
+## Admin CMS (/admin)
+
+The admin panel at `/admin` lets you edit site content (site settings, quotes, essays, biography). It **requires the Express server** to run — it will not work on Cloudflare Pages. Use it when running locally or on a server (e.g. Replit, VPS).
+
+Set the `ADMIN_PASSWORD` environment variable/secret to protect the admin. Only users with that password can log in.
+
 ## Build
 
 ```bash

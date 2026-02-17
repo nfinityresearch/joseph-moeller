@@ -6,6 +6,7 @@ import { fileURLToPath } from "url";
 import { storage } from "./storage";
 import { insertContactMessageSchema } from "@shared/schema";
 import { seedFromJSON } from "./seed";
+import { registerAdminRoutes } from "./admin-routes";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -15,6 +16,7 @@ export async function registerRoutes(
 ): Promise<Server> {
 
   await seedFromJSON();
+  registerAdminRoutes(app);
 
   app.get("/api/site", (_req, res) => {
     const sitePath = path.resolve(__dirname, "../content/site.json");
